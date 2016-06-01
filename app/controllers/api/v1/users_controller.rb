@@ -11,7 +11,7 @@ module Api
 
       def index
         @users = User.all
-        render json: {users: @users}, status: 200
+        render json: {data: {users: @users}, errors: {status: 200}}
       end
 
       swagger_api :show do
@@ -23,7 +23,7 @@ module Api
 
       def show
         @user = User.find(params[:id])
-        render json: {user: @user}, status: 200
+        render json: {data: {user: @user}, errors: {status: 200}}
       end
 
     end
