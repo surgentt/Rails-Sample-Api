@@ -2,6 +2,27 @@ module Api
   module V1
     class UsersController < ApplicationController
 
+      swagger_api :create do
+        summary 'Creates a new User'
+        param :form, 'user[name]', :string, :required, 'Full Name'
+        param :form, 'user[email]', :string, :required, 'Email address'
+        param :form, 'user[password]', :string, :required, 'Password'
+        param :form, 'user[password_confirmation]', :string, :required, 'Password Confirmation'
+        response :unauthorized
+        response :not_acceptable
+      end
+
+      def create
+        user = User.new(user_params)
+        if user.save
+          # TODO: Undefined method user.authentication_token
+          render json: {data: {user: {auth_token: user.authentication_token, email: user.email }}}, status: 201
+        else
+          warden.custom_failure!
+          render json: {data: {errors: {title: user.errors}}}, status: 422
+        end
+      end
+
       swagger_controller :users, 'Users'
 
       swagger_api :index do
@@ -24,6 +45,12 @@ module Api
       def show
         @user = User.find(params[:id])
         render json: {data: {user: @user}, errors: {}}, status: 200
+      end
+
+      private
+
+      def user_params
+        params.require(:user).permit(:name, :email, :password, :password_confirmation)
       end
 
     end
