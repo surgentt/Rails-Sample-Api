@@ -18,16 +18,12 @@ module Api
         summary 'Fetches a User'
         param :path, :id, :integer, :required, 'User ID'
         response :unauthorized
-        response :not_acceptable
+        response :not_found
       end
 
       def show
         @user = User.find(params[:id])
-        if @user
-          render json: {user: @user}, status: 200
-        else
-          render status: 406
-        end
+        render json: {user: @user}, status: 200
       end
 
     end
