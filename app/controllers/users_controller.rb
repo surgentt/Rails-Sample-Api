@@ -9,7 +9,8 @@ class UsersController < ApplicationController
   end
 
   def index
-    render :json => {result:'Success'}, :status => 200
+    @users = User.all
+    render json: {response: @users}, status: 200
   end
 
   swagger_api :show do
@@ -20,7 +21,12 @@ class UsersController < ApplicationController
   end
 
   def show
-    render :json => {result:'Success'}, :status => 200
+    @user = User.find(params[:id])
+    if @user
+      render json: {result: @user}, status: 200
+    else
+      render status: 406
+    end
   end
 
 end
