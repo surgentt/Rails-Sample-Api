@@ -10,17 +10,17 @@ module Api
         param :form, 'user[email]',    :string, :required, 'Email address'
         param :form, 'user[password]', :string, :required, 'Password'
         param :form, 'user[password_confirmation]', :string, :required, 'Password Confirmation'
-        response :unauthorized
         response :not_acceptable
       end
 
       def create
         user = User.new(user_params)
+        # user.skip_confirmation!
         if user.save
-          render json: {data: {user: {auth_token: user.authentication_token, email: user.email }}}, status: 201
+          render json: {data: {user: {email: user.email }}}, status: 201
         else
           warden.custom_failure!
-          render json: {data: {errors: {title: user.errors}}}, status: 422
+          render json: {data: {errors: user.errors}}, status: 406
         end
       end
 

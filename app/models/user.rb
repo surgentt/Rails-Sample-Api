@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
-  include DeviseTokenAuth::Concerns::User
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  include DeviseTokenAuth::Concerns::User
 
   enum role: [:customer, :admin]
   after_initialize :set_default_role, if: :new_record?
