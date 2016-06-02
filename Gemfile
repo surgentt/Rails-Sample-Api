@@ -22,11 +22,11 @@ group :development, :test do
   gem 'spring'
   gem 'pry-rails'
   gem 'pry-rescue'
-end
-group :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'database_cleaner'
   gem 'faker'
+end
+group :test do
+  gem 'database_cleaner'
   gem 'guard-rspec', require: false
 end

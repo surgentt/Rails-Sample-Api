@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160602123726) do
+ActiveRecord::Schema.define(version: 20160602134436) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "menu_items", force: :cascade do |t|
+    t.string   "title"
+    t.text     "description"
+    t.integer  "price_in_cents"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "provider",               default: "email", null: false
@@ -33,8 +41,6 @@ ActiveRecord::Schema.define(version: 20160602123726) do
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
     t.string   "name"
-    t.string   "nickname"
-    t.string   "image"
     t.string   "email"
     t.integer  "role"
     t.json     "tokens"

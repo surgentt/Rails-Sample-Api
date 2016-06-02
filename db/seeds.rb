@@ -20,3 +20,11 @@ User.create([
     password_confirmation: 'please123'
   }
 ])
+
+MenuItem.create([
+  {
+    title: 'Pasta',
+    description: 'Pasta is tasty',
+    price_in_cents: 100
+  }
+])

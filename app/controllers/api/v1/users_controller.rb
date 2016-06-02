@@ -10,6 +10,7 @@ module Api
         param :form, 'user[email]',    :string, :required, 'Email address'
         param :form, 'user[password]', :string, :required, 'Password'
         param :form, 'user[password_confirmation]', :string, :required, 'Password Confirmation'
+        response :created
         response :not_acceptable
       end
 
@@ -18,7 +19,6 @@ module Api
         if user.save
           render json: {data: {user: {email: user.email }}}, status: 201
         else
-          warden.custom_failure!
           render json: {data: {errors: user.errors}}, status: 406
         end
       end
