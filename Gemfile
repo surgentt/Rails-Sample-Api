@@ -6,10 +6,12 @@ gem 'rails-api'
 
 gem 'pg'
 
-gem 'devise'
 gem 'figaro'
 
 gem 'swagger-docs'
+
+gem 'omniauth'
+gem 'devise_token_auth'
 
 group :development do
   gem 'better_errors'
