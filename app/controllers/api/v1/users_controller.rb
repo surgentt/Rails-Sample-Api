@@ -15,7 +15,6 @@ module Api
 
       def create
         user = User.new(user_params)
-        # user.skip_confirmation!
         if user.save
           render json: {data: {user: {email: user.email }}}, status: 201
         else
