@@ -6,10 +6,10 @@ class User < ActiveRecord::Base
   enum role: [:customer, :admin]
   after_initialize :set_default_role, if: :new_record?
 
-  validates :name, presence: true
-
   has_many :orders
   has_many :menu_items, through: :order_menu_items
+
+  validates :name, presence: true
 
   def set_default_role
     self.role ||= :customer

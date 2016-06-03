@@ -8,10 +8,10 @@ RSpec.describe Order, type: :model do
       expect(order.address).to eq('101 Christie Street, New York, NY 10005')
     end
 
-    it 'should NOT allow creation without a user_id, address, and stripe token' do
+    it 'should NOT allow creation without a user_id, address, stripe token and total_price_in_cents and menu_items' do
+      # TODO: currently total_price_in_cents and menu_items is not working
       order = Order.create
       expect(order.errors.count).to eq(5)
-      # TODO: This should be expanded to include total_price_in_cents and menu_items
     end
 
     it 'belongs_to a User' do

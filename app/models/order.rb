@@ -15,8 +15,7 @@ class Order < ActiveRecord::Base
     self.save
     self.menu_items << get_menu_items(order_params[:menu_items])
     self.total_price_in_cents = total_fee_price
-    charge_stripe
-    self.save
+    charge_stripe_and_save
   end
 
   private
@@ -29,10 +28,10 @@ class Order < ActiveRecord::Base
     self.menu_items.inject(0){|sum, menu_item| sum + menu_item.price_in_cents}
   end
 
-  def charge_stripe
+  def charge_stripe_and_save
     response = stripe_charge(self.stripe_card_token, self.total_price_in_cents)
     if response && response['status'] == 'succeeded'
-      true
+      save
     else
       false
     end
