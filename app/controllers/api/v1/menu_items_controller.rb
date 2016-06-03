@@ -60,7 +60,7 @@ module Api
       def update
         @menu_item = MenuItem.find(params[:id])
         if @menu_item.update(menu_item_params)
-          render json: {succes: true}, status: 200
+          render json: {data: {menu_item: @menu_item}}, status: 200
         else
           render json: {data: {errors: @menu_item.errors}}, status: 406
         end
