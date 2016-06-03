@@ -18,7 +18,9 @@ module Api
       swagger_api :create do
         summary 'Creates a New Menu Item'
         param :path, :user_id, :integer, :required, 'User Id'
-        param :form, 'order[address]', :string, :required, 'Title'
+        param :form, 'order[address]', :string, :required, 'Address'
+        param :form, 'order[stripe_card_token]', :string, :required, 'Stripe Card Token'
+        param :form, 'order[menu_item][]', :array, :required, 'Menu Item'
         response :created
         response :not_acceptable
       end
