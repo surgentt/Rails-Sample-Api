@@ -10,7 +10,4 @@ Rails.application.routes.draw do
     end
   end
 
-  # Points to the git sub module in the public directory
-  get '/api' => redirect('/swagger/dist/index.html?url=/apidocs/api-docs.json')
-
 end
