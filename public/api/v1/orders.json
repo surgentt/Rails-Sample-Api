@@ -52,7 +52,7 @@
             },
             {
               "paramType": "form",
-              "name": "order[menu_item][]",
+              "name": "order[menu_items][]",
               "type": "array",
               "description": "Menu Item",
               "required": true

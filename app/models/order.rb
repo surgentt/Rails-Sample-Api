@@ -7,14 +7,14 @@ class Order < ActiveRecord::Base
   validates :address, presence: true
   validates :total_price_in_cents, presence: true
   validates :stripe_card_token, presence: true
-  validates :menu_items, length: { minimum: 1 }
 
   def create_by_customer(order_params, user)
     self.user=user
     self.attributes=order_params.except(:menu_items)
-    self.menu_items << get_menu_items(order_params[:menu_items])
     self.total_price_in_cents = total_fee_price
     charge_stripe_and_save
+    self.menu_items << get_menu_items(order_params[:menu_items])
+    self.save
   end
 
   private
@@ -49,7 +49,9 @@ class Order < ActiveRecord::Base
     # rescue Stripe::CardError => e
     #   # The card has been declined
     # end
-    {status: 'succeeded'}
+
+    # TODO: Remove hardcoded stripe response when setup
+    {'status' => 'succeeded'}
   end
 
 end

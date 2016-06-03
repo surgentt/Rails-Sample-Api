@@ -25,7 +25,7 @@ RSpec.describe Order, type: :model do
     it 'had_many menu_items through order_menu_items' do
       order = FactoryGirl.create(:order)
       menu_item = FactoryGirl.create(:menu_item)
-      order.menu_items << menu_item
+      order.menu_items << MenuItem.all
       order.save
       expect(order.menu_items).to eq([menu_item])
     end

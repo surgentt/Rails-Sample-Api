@@ -20,7 +20,7 @@ module Api
         param :path, :user_id, :integer, :required, 'User Id'
         param :form, 'order[address]', :string, :required, 'Address'
         param :form, 'order[stripe_card_token]', :string, :required, 'Stripe Card Token'
-        param :form, 'order[menu_item][]', :array, :required, 'Menu Item'
+        param :form, 'order[menu_items][]', :array, :required, 'Menu Item'
         response :created
         response :not_acceptable
       end
@@ -29,7 +29,7 @@ module Api
         @user = User.find(params[:user_id])
         @order = Order.new
         if @order.create_by_customer(order_params, @user)
-          render json: {data: {order: @order}}, status: 201
+          render json: {data: {order: @order, relationships: {menu_items: @order.menu_items}}}, status: 201
         else
           render json: {data: {errors: @order.errors}}, status: 406
         end
@@ -45,7 +45,7 @@ module Api
 
       def show
         @order = Order.find(params[:id])
-        render json: {data: {order: @order}, errors: {}}, status: 200
+        render json: {data: {order: @order, relationships: {menu_items: @order.menu_items}}, errors: {}}, status: 200
       end
 
       private
