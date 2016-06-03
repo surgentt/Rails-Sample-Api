@@ -4,6 +4,15 @@ module Api
 
       swagger_controller :orders, 'Orders'
 
+      swagger_api :view_all do
+        summary 'Fetches all Orders'
+      end
+
+      def view_all
+        @orders = Order.all
+        render json: {data: {orders: @orders}, errors: {}}, status: 200
+      end
+
       swagger_api :index do
         summary 'Fetches all Orders for a User'
         param :path, :user_id, :integer, :required, 'User Id'
@@ -11,8 +20,8 @@ module Api
 
       def index
         @user = User.find(params[:user_id])
-        @orders = Order.all
-        render json: {data: {orders: @orders}, errors: {}}, status: 200
+        @orders = @user.orders
+        render json: {data: {orders: @orders, relationships: {user: @user}}, errors: {}}, status: 200
       end
 
       swagger_api :create do
