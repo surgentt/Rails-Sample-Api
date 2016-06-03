@@ -8,9 +8,10 @@ RSpec.describe Order, type: :model do
       expect(order.address).to eq('101 Christie Street, New York, NY 10005')
     end
 
-    it 'should NOT allow creation without a user_id, address, total_price_in_cents and stripe token' do
+    it 'should NOT allow creation without a user_id, address, and stripe token' do
       order = Order.create
-      expect(order.errors.count).to eq(4)
+      expect(order.errors.count).to eq(5)
+      # TODO: This should be expanded to include total_price_in_cents and menu_items
     end
 
     it 'belongs_to a User' do
@@ -29,5 +30,40 @@ RSpec.describe Order, type: :model do
       order.save
       expect(order.menu_items).to eq([menu_item])
     end
+
+    it 'will not be able to save the has_many through if the order does NOT have an id' do
+      order = FactoryGirl.build(:order)
+      FactoryGirl.create(:menu_item)
+      order.menu_items << MenuItem.all
+      expect(order.save).to eq(false)
+    end
   end
+
+  describe '#create_by_customer(order_params, user)' do
+    before(:each) do
+      @menu_item1 = FactoryGirl.create(:menu_item)
+      @menu_item2 = FactoryGirl.create(:menu_item)
+      @user = FactoryGirl.create(:user)
+      @order = Order.new
+      @order_params = {address: '549 South Waterloo Road, Devon, PA 19333', stripe_card_token: 'fklsdjah', menu_items: [@menu_item1.id, @menu_item2.id]}
+      @order.create_by_customer(@order_params, @user)
+      @order = @order.reload
+    end
+
+    it 'sets the proper user object' do
+      expect(@order.user).to eq(@user)
+    end
+
+    it 'sets to the attributes', focus: true do
+      expect(@order.address).to eq('549 South Waterloo Road, Devon, PA 19333')
+      expect(@order.stripe_card_token).to eq('fklsdjah')
+      expect(@order.total_price_in_cents).to eq(200)
+    end
+
+    it 'Finds and saves the appropriate  items' do
+      expect(@order.menu_items).to match_array([@menu_item1, @menu_item2])
+    end
+
+  end
+
 end

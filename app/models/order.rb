@@ -5,15 +5,15 @@ class Order < ActiveRecord::Base
 
   validates :user_id, presence: true
   validates :address, presence: true
-  validates :total_price_in_cents, presence: true
   validates :stripe_card_token, presence: true
 
   def create_by_customer(order_params, user)
     self.user=user
     self.attributes=order_params.except(:menu_items)
-    self.total_price_in_cents = total_fee_price
-    charge_stripe_and_save
+    self.save
     self.menu_items << get_menu_items(order_params[:menu_items])
+    self.total_price_in_cents = total_fee_price
+    charge_stripe
     self.save
   end
 
@@ -27,10 +27,10 @@ class Order < ActiveRecord::Base
     self.menu_items.inject(0){|sum, menu_item| sum + menu_item.price_in_cents}
   end
 
-  def charge_stripe_and_save
+  def charge_stripe
     response = stripe_charge(self.stripe_card_token, self.total_price_in_cents)
     if response && response['status'] == 'succeeded'
-      save
+      true
     else
       false
     end
