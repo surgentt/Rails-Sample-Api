@@ -16,18 +16,17 @@ module Api
       end
 
       swagger_api :create do
-        summary 'Creates a new menu item'
+        summary 'Creates a New Menu Item'
         param :path, :user_id, :integer, :required, 'User Id'
-        param :form, 'menu_item[address]', :string, :required, 'Title'
+        param :form, 'order[address]', :string, :required, 'Title'
         response :created
         response :not_acceptable
       end
 
       def create
         @user = User.find(params[:user_id])
-        @order = Order.new(order_params)
-        @order.user = @user
-        if @order.save
+        @order = Order.new
+        if @order.create_by_customer(order_params, @user)
           render json: {data: {order: @order}}, status: 201
         else
           render json: {data: {errors: @order.errors}}, status: 406
@@ -50,7 +49,12 @@ module Api
       private
 
       def order_params
-        params.require(:menu_item).permit(:address)
+        # Swagger method pulls data from the view like ['2,3']
+        # Radio buttons on my other app return params like this. ["1", "2"]
+        if params[:order][:menu_items].length == 1
+          params[:order][:menu_items] = params[:order][:menu_items].first.split(',')
+        end
+        params.require(:order).permit(:address, :stripe_card_token, menu_items: [])
       end
 
     end

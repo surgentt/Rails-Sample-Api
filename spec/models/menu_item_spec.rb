@@ -15,6 +15,15 @@ RSpec.describe MenuItem, type: :model do
       menu_item = MenuItem.create
       expect(menu_item.errors.count).to eq(3)
     end
+
+
+    it 'had_many menu_items through order_menu_items' do
+      order = FactoryGirl.create(:order)
+      menu_item = FactoryGirl.create(:menu_item)
+      menu_item.orders << order
+      order.save
+      expect(menu_item.orders).to eq([order])
+    end
   end
 
 end

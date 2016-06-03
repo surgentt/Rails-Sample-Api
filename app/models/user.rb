@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
 
   has_many :orders
+  has_many :menu_items, through: :order_menu_items
 
   def set_default_role
     self.role ||= :customer
