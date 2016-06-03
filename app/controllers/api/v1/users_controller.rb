@@ -35,6 +35,8 @@ module Api
         render json: {data: {user: @user}, errors: {}}, status: 200
       end
 
+      ## Admin Only
+
       swagger_api :index do
         summary 'Fetches all users'
         response :unauthorized

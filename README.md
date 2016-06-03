@@ -28,3 +28,5 @@ run 'bundle exec rspec' to run the unit testing
 
 I used the following guide [JSON Api](http://jsonapi.org/format/) as a starting point.
 
+- Currently Patch Requests and Delete Requests are not returning any content
+

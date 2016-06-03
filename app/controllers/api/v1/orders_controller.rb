@@ -4,15 +4,6 @@ module Api
 
       swagger_controller :orders, 'Orders'
 
-      swagger_api :view_all do
-        summary 'Fetches all Orders'
-      end
-
-      def view_all
-        @orders = Order.all
-        render json: {data: {orders: @orders}, errors: {}}, status: 200
-      end
-
       swagger_api :index do
         summary 'Fetches all Orders for a User'
         param :path, :user_id, :integer, :required, 'User Id'
@@ -52,9 +43,40 @@ module Api
         response :not_found
       end
 
+
       def show
         @order = Order.find(params[:id])
         render json: {data: {order: @order, relationships: {menu_items: @order.menu_items}}, errors: {}}, status: 200
+      end
+
+      ## Admin only
+
+      swagger_api :view_all do
+        summary 'Fetches all Orders'
+      end
+
+      def view_all
+        @orders = Order.all
+        render json: {data: {orders: @orders}, errors: {}}, status: 200
+      end
+
+      swagger_api :update do
+        summary 'Updates an existing Order'
+        param :path, :id, :integer, :required, 'Menu Item'
+        param :form, 'order[complete]', :boolean, :required, 'Complete?'
+        response 200, 'Updated'
+        response :unauthorized
+        response :not_found
+        response :not_acceptable
+      end
+
+      def update
+        @order = Order.find(params[:id])
+        if  @order.update(order_params)
+          render json: {data: {order: @order, relationship: {menu_items: @order.menu_items}}, errors: {}}, status: 200
+        else
+          render json: {data: {errors: @order.errors}}, status: 406
+        end
       end
 
       private
@@ -62,10 +84,10 @@ module Api
       def order_params
         # Swagger method pulls data from the view like ['2,3']
         # Radio buttons on my other app return params like this. ["1", "2"]
-        if params[:order][:menu_items].length == 1
+        if params[:order][:menu_items] && params[:order][:menu_items].length == 1
           params[:order][:menu_items] = params[:order][:menu_items].first.split(',')
         end
-        params.require(:order).permit(:address, :stripe_card_token, menu_items: [])
+        params.require(:order).permit(:address, :stripe_card_token, :complete, menu_items: [])
       end
 
     end

@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       end
       resources :menu_items, except: [:new, :edit]
       get '/orders', to: 'orders#view_all', as: 'orders'
+      resources :orders, only: [:update]
     end
   end
 

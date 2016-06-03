@@ -13,6 +13,20 @@ module Api
         render json: {data: {menu_items: @menu_items}, errors: {}}, status: 200
       end
 
+      swagger_api :show do
+        summary 'Fetches a Menu Item'
+        param :path, :id, :integer, :required, 'Menu ID'
+        response :unauthorized
+        response :not_found
+      end
+
+      def show
+        @menu_item = MenuItem.find(params[:id])
+        render json: {data: {menu_item: @menu_item}, errors: {}}, status: 200
+      end
+
+      # Admin Users Only
+
       swagger_api :create do
         summary 'Creates a new menu item'
         param :form, 'menu_item[title]', :string, :required, 'Title'
@@ -31,25 +45,13 @@ module Api
         end
       end
 
-      swagger_api :show do
-        summary 'Fetches a Menu Item'
-        param :path, :id, :integer, :required, 'Menu ID'
-        response :unauthorized
-        response :not_found
-      end
-
-      def show
-        @menu_item = MenuItem.find(params[:id])
-        render json: {data: {menu_item: @menu_item}, errors: {}}, status: 200
-      end
-
       swagger_api :update do
         summary 'Updates an existing Menu Item'
         param :path, :id, :integer, :required, 'Menu Item'
-        param :form, :title, :string, :optional, 'Title'
-        param :form, :description, :string, :optional, 'Description'
-        param :form, :price_in_cents, :string, :optional, 'Price in Cents'
-        response 204, 'Updated'
+        param :form, 'menu_item[title]', :string, :optional, 'Title'
+        param :form, 'menu_item[description]', :string, :optional, 'Description'
+        param :form, 'menu_item[price_in_cents]', :string, :optional, 'Price in Cents'
+        response 200, 'Updated'
         response :unauthorized
         response :not_found
         response :not_acceptable
@@ -58,7 +60,7 @@ module Api
       def update
         @menu_item = MenuItem.find(params[:id])
         if @menu_item.update(menu_item_params)
-          render json: {data: {menu_item: @menu_item}, errors: {}}, status: 204
+          render json: {succes: true}, status: 200
         else
           render json: {data: {errors: @menu_item.errors}}, status: 406
         end
@@ -67,14 +69,14 @@ module Api
       swagger_api :destroy do
         summary 'Deletes an existing Menu item'
         param :path, :id, :integer, :required, 'Menu Id'
-        response 204, 'Deleted'
+        response 200, 'Deleted'
         response :unauthorized
         response :not_found
       end
 
       def destroy
         @menu_item = MenuItem.find(params[:id]).destroy
-        render json: {data: {menu_item: @menu_item}, errors: {}}, status: 204
+        render json: {data: {menu_item: @menu_item}, errors: {}}, status: 200
       end
 
       private
