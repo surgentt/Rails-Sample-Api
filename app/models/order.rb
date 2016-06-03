@@ -6,6 +6,8 @@ class Order < ActiveRecord::Base
   validates :user_id, presence: true
   validates :address, presence: true
   validates :stripe_card_token, presence: true
+  # validates :menu_items, presence: true
+  # validates :total_price_in_cents, presence: true
 
   def create_by_customer(order_params, user)
     self.user=user
