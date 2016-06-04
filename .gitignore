@@ -11,6 +11,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore Swagger configuration files
+/public/apidocs/
+
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep
@@ -22,5 +25,3 @@
 # Ignore ruby mine configuration
 .idea/*
 
-# Ignore Swagger configuration files
-/public/apidocs/*

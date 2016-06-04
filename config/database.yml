@@ -12,3 +12,10 @@ test:
   encoding: unicode
   database: genome_restaurant_test
   pool:     5
+
+production:
+  adapter:  postgresql
+  host:     localhost
+  encoding: unicode
+  database: genome_restaurant_local_production
+  pool:     5
