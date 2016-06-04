@@ -8,10 +8,9 @@ RSpec.describe Order, type: :model do
       expect(order.address).to eq('101 Christie Street, New York, NY 10005')
     end
 
-    it 'should NOT allow creation without a user_id, address, stripe token and total_price_in_cents and menu_items' do
-      # TODO: currently total_price_in_cents and menu_items is not working
+    it 'should NOT allow creation without a user_id, address, stripe token' do
       order = Order.create
-      expect(order.errors.count).to eq(5)
+      expect(order.errors.count).to eq(3)
     end
 
     it 'belongs_to a User' do
@@ -40,30 +39,29 @@ RSpec.describe Order, type: :model do
   end
 
   describe '#create_by_customer(order_params, user)' do
-    before(:each) do
-      @menu_item1 = FactoryGirl.create(:menu_item)
-      @menu_item2 = FactoryGirl.create(:menu_item)
-      @user = FactoryGirl.create(:user)
-      @order = Order.new
-      @order_params = {address: '549 South Waterloo Road, Devon, PA 19333', stripe_card_token: 'fklsdjah', menu_items: [@menu_item1.id, @menu_item2.id]}
-      @order.create_by_customer(@order_params, @user)
-      @order = @order.reload
+    it 'sets all relevant attribuets' do
+      menu_item1 = FactoryGirl.create(:menu_item)
+      menu_item2 = FactoryGirl.create(:menu_item)
+      user = FactoryGirl.create(:user)
+      order = Order.new
+      order_params = {address: '549 South Waterloo Road, Devon, PA 19333', stripe_card_token: 'fklsdjah', menu_items: [menu_item1.id, menu_item2.id]}
+      order.create_by_customer(order_params, user)
+      order = order.reload
+      expect(order.user).to eq(user)
+      expect(order.address).to eq('549 South Waterloo Road, Devon, PA 19333')
+      expect(order.stripe_card_token).to eq('fklsdjah')
+      expect(order.total_price_in_cents).to eq(200)
+      expect(order.menu_items).to match_array([menu_item1, menu_item2])
     end
 
-    it 'sets the proper user object' do
-      expect(@order.user).to eq(@user)
+    it 'requires menu_items for an order', focus: true do
+      user = FactoryGirl.create(:user)
+      order = Order.new
+      order_params = {address: '549 South Waterloo Road, Devon, PA 19333', stripe_card_token: 'fklsdjah', menu_items: []}
+      order.create_by_customer(order_params, user)
+      expect(order.persisted?).to eq(false)
+      expect(order.errors.count).to eq(1)
     end
-
-    it 'sets to the attributes', focus: true do
-      expect(@order.address).to eq('549 South Waterloo Road, Devon, PA 19333')
-      expect(@order.stripe_card_token).to eq('fklsdjah')
-      expect(@order.total_price_in_cents).to eq(200)
-    end
-
-    it 'Finds and saves the appropriate  items' do
-      expect(@order.menu_items).to match_array([@menu_item1, @menu_item2])
-    end
-
   end
 
 end

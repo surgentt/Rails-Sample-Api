@@ -6,16 +6,23 @@ class Order < ActiveRecord::Base
   validates :user_id, presence: true
   validates :address, presence: true
   validates :stripe_card_token, presence: true
-  # validates :menu_items, presence: true
-  # validates :total_price_in_cents, presence: true
 
   def create_by_customer(order_params, user)
     self.user=user
     self.attributes=order_params.except(:menu_items)
     self.save
+
     self.menu_items << get_menu_items(order_params[:menu_items])
-    self.total_price_in_cents = total_fee_price
-    charge_stripe_and_save
+    self.total_price_in_cents = total_menu_item_price
+
+    if self.menu_items.empty?
+      self.errors.add(:menu_items, 'cannot be empty')
+      self.destroy
+      false
+    else
+      charge_stripe
+      self.save
+    end
   end
 
   private
@@ -24,17 +31,13 @@ class Order < ActiveRecord::Base
     MenuItem.where(id: menu_item_ids)
   end
 
-  def total_fee_price
+  def total_menu_item_price
     self.menu_items.inject(0){|sum, menu_item| sum + menu_item.price_in_cents}
   end
 
-  def charge_stripe_and_save
+  def charge_stripe
     response = stripe_charge(self.stripe_card_token, self.total_price_in_cents)
-    if response && response['status'] == 'succeeded'
-      save
-    else
-      false
-    end
+    ( response && response['status'] == 'succeeded' ) ? true : false
   end
 
   def stripe_charge(token, total_amt_in_cents)
@@ -48,7 +51,7 @@ class Order < ActiveRecord::Base
     #     :description => 'Example charge'
     #   )
     # rescue Stripe::CardError => e
-    #   # The card has been declined
+    #   self.errors.add(:stripe_card_token, 'is invalid')
     # end
 
     # TODO: Remove hardcoded stripe response when setup
