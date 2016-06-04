@@ -39,7 +39,7 @@ RSpec.describe Order, type: :model do
   end
 
   describe '#create_by_customer(order_params, user)' do
-    it 'sets all relevant attribuets' do
+    it 'sets all relevant attributes' do
       menu_item1 = FactoryGirl.create(:menu_item)
       menu_item2 = FactoryGirl.create(:menu_item)
       user = FactoryGirl.create(:user)
