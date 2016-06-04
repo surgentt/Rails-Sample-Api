@@ -21,3 +21,6 @@
 
 # Ignore ruby mine configuration
 .idea/*
+
+# Ignore Swagger configuration files
+/public/apidocs/*
