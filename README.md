@@ -1,6 +1,6 @@
-## Genome Coding Challenge
+# Genome Coding Challenge
 
-System requirements
+## System requirements
 - Architect and implement and Rails-based API for a hypothetical restaurant. The API should be able to support Customers, Admin Users (the restaurant owners), Menu Items, and Orders.
 - Set up the API to store data with Postgres.
 - Implement unit testing for base API methods.
@@ -15,7 +15,7 @@ System requirements
 5. bundle exec rake swagger:docs
 6. bundle exec rails s
 
-Visit [http://localhost:3000](http://localhost:3000) to view the Swagger Documentation or alternatively localhost:3000/public/index.html
+Visit [http://localhost:3000](http://localhost:3000) to view the Swagger Documentation or alternatively [localhost:3000/public/index.html](localhost:3000/public/index.html)
 
 ## Testing
 
@@ -31,14 +31,14 @@ run 'bundle exec rspec' to run the unit testing
 
 I used the following guide [JSON Api](http://jsonapi.org/format/) as a starting point.
 
-- Currently Patch Requests and Delete Requests are not returning any content
-
 ## Push to Production
 
 [https://genome-restaurant.herokuapp.com/](https://genome-restaurant.herokuapp.com/)
-- Unfortunately after a debugging, running:
-'heroku run rake swagger:docs' will not actually creation the public json file :(. 
+- Unfortunately after debugging:
+'heroku run rake swagger:docs' will not actually creation the /public json files permanetly :(. 
 [Stack Overflow Post](http://stackoverflow.com/questions/12123050/no-permanent-filesystem-for-heroku)
 - A work around is to run:
 
-'bundle exec rake swagger:docs RAILS_ENV='production' prior to pushing up.
+"bundle exec rake swagger:docs RAILS_ENV='production'" 
+
+immediately prior to pushing to production.
