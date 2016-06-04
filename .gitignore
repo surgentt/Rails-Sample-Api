@@ -13,6 +13,7 @@
 
 # Ignore Swagger configuration files
 /public/apidocs/
+/public/apidocs/api-docs.json
 
 # Ignore all logfiles and tempfiles.
 /log/*
