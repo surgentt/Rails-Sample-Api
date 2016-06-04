@@ -8,21 +8,24 @@ System requirements
 
 ##  How to Run
 
-1. bundle exec rake db:create
-2. bundle exec rake db:migration
-3. bundle exec rake db:seed
+1. Bundle Install
+2. bundle exec rake db:create
+3. bundle exec rake db:migration
+4. bundle exec rake db:seed
+5. bundle exec rake swagger:docs
+6. bundle exec rails s
 
-Visit localhost:3000 to view the Swagger Documentation or alternatively localhost:3000/public/index.html
+Visit [http://localhost:3000](http://localhost:3000) to view the Swagger Documentation or alternatively localhost:3000/public/index.html
 
 ## Testing
 
 run 'bundle exec rspec' to run the unit testing
-- Some validation and error handling on the order creation still need to be compelted
 
 ## User Authentication
 
 - I am attempting to use devise token authentication. Although I am only supporting email signup, omniauth is a dependency of this gem.
 - User roles are setup using the enum function. All users are set to default as customers and then programmers can upgrade their settings.
+- I have not yet setup the fully robust and secure User Authentication system, but I cam confident I can complete the taks. 
 
 ## JSON Response Format
 
@@ -35,6 +38,7 @@ I used the following guide [JSON Api](http://jsonapi.org/format/) as a starting 
 [https://genome-restaurant.herokuapp.com/](https://genome-restaurant.herokuapp.com/)
 - Unfortunately after a debugging, running:
 'heroku run rake swagger:docs' will not actually creation the public json file :(. 
-[http://stackoverflow.com/questions/12123050/no-permanent-filesystem-for-heroku](http://stackoverflow.com/questions/12123050/no-permanent-filesystem-for-heroku)
-- A bad work around is to run
-- 'bundle exec rake swagger:docs' prior to pushing up.
+[Stack Overflow Post](http://stackoverflow.com/questions/12123050/no-permanent-filesystem-for-heroku)
+- A work around is to run:
+
+'bundle exec rake swagger:docs RAILS_ENV='production' prior to pushing up.
