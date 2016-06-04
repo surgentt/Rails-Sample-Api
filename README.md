@@ -30,3 +30,11 @@ I used the following guide [JSON Api](http://jsonapi.org/format/) as a starting 
 
 - Currently Patch Requests and Delete Requests are not returning any content
 
+## Push to Production
+
+[https://genome-restaurant.herokuapp.com/](https://genome-restaurant.herokuapp.com/)
+- Unfortunately after a debugging, running:
+'heroku run rake swagger:docs' will not actually creation the public json file :(. 
+[http://stackoverflow.com/questions/12123050/no-permanent-filesystem-for-heroku](http://stackoverflow.com/questions/12123050/no-permanent-filesystem-for-heroku)
+- A bad work around is to run
+- 'bundle exec rake swagger:docs' prior to pushing up.
