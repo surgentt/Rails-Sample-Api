@@ -1,4 +1,4 @@
-class Api::V1::Users::SessionsController < Devise::SessionsController
+class Api::V1::Users::SessionsController < DeviseTokenAuth::SessionsController
 
   swagger_controller :sessions, 'Sessions', resource_path: 'auth'
 

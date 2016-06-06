@@ -8,4 +8,6 @@ class ApplicationController < ActionController::API
     render json: {data: {}, errors: {title: 'record not found'}}, status: 404
   end
 
+  protected
+
 end
