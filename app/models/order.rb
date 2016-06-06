@@ -1,4 +1,4 @@
-class Order < ActiveRecord::Base
+class Provider < ActiveRecord::Base
   belongs_to :user
   has_many :order_menu_items
   has_many :menu_items, through: :order_menu_items
@@ -37,7 +37,7 @@ class Order < ActiveRecord::Base
 
   def charge_stripe
     response = stripe_charge(self.stripe_card_token, self.total_price_in_cents)
-    ( response && response['status'] == 'succeeded' ) ? true : false
+    response && response['status'] == 'succeeded'
   end
 
   def stripe_charge(token, total_amt_in_cents)

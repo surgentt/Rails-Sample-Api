@@ -4,6 +4,10 @@
   "basePath": "https://genome-restaurant.herokuapp.com",
   "apis": [
     {
+      "path": "/apidocs/api/v1/menu_items.{format}",
+      "description": "Menu Items"
+    },
+    {
       "path": "/apidocs/api/v1/users/sessions.{format}",
       "description": "Sessions"
     },
@@ -18,10 +22,6 @@
     {
       "path": "/apidocs/api/v1/users.{format}",
       "description": "Users"
-    },
-    {
-      "path": "/apidocs/api/v1/menu_items.{format}",
-      "description": "Menu Items"
     }
   ],
   "authorizations": null
