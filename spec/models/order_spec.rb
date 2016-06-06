@@ -54,7 +54,7 @@ RSpec.describe Order, type: :model do
       expect(order.menu_items).to match_array([menu_item1, menu_item2])
     end
 
-    it 'requires menu_items for an order', focus: true do
+    it 'requires menu_items for an order' do
       user = FactoryGirl.create(:user)
       order = Order.new
       order_params = {address: '549 South Waterloo Road, Devon, PA 19333', stripe_card_token: 'fklsdjah', menu_items: []}

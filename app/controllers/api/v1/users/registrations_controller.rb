@@ -1,4 +1,3 @@
-
 class Api::V1::Users::RegistrationsController < DeviseTokenAuth::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
 
