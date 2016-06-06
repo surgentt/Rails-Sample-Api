@@ -4,6 +4,10 @@
   "basePath": "http://localhost:3000",
   "apis": [
     {
+      "path": "/apidocs/api/v1/users/registrations.{format}",
+      "description": "Registrations"
+    },
+    {
       "path": "/apidocs/api/v1/orders.{format}",
       "description": "Orders"
     },
