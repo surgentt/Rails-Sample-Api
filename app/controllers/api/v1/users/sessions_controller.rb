@@ -6,7 +6,7 @@ class Api::V1::Users::SessionsController < DeviseTokenAuth::SessionsController
     summary 'Signs in a User'
     param :form, :email,    :string, :required, 'Email address'
     param :form, :password, :string, :required, 'Password'
-    response :not_acceptable
+    response :unauthorized
   end
 
   def create
