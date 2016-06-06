@@ -1,5 +1,5 @@
 class Api::V1::Users::RegistrationsController < DeviseTokenAuth::RegistrationsController
-  skip_before_action :authenticate_user!
+  # skip_before_action :authenticate_user!
   before_action :configure_sign_up_params, only: [:create]
 
   swagger_controller :registrations, 'Registrations', resource_path: 'auth'
