@@ -22,58 +22,6 @@
       ]
     },
     {
-      "path": "/api/v1/users.json",
-      "operations": [
-        {
-          "summary": "Creates a new User",
-          "parameters": [
-            {
-              "paramType": "form",
-              "name": "user[name]",
-              "type": "string",
-              "description": "Full Name",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "user[email]",
-              "type": "string",
-              "description": "Email address",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "user[password]",
-              "type": "string",
-              "description": "Password",
-              "required": true
-            },
-            {
-              "paramType": "form",
-              "name": "user[password_confirmation]",
-              "type": "string",
-              "description": "Password Confirmation",
-              "required": true
-            }
-          ],
-          "responseMessages": [
-            {
-              "code": 201,
-              "responseModel": null,
-              "message": "Created"
-            },
-            {
-              "code": 406,
-              "responseModel": null,
-              "message": "Not Acceptable"
-            }
-          ],
-          "nickname": "Api::V1::Users#create",
-          "method": "post"
-        }
-      ]
-    },
-    {
       "path": "/api/v1/users/{id}.json",
       "operations": [
         {

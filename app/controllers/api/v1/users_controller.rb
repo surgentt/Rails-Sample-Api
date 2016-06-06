@@ -4,26 +4,6 @@ module Api
 
       swagger_controller :users, 'Users'
 
-      swagger_api :create do
-        summary 'Creates a new User'
-        param :form, 'user[name]',     :string, :required, 'Full Name'
-        param :form, 'user[email]',    :string, :required, 'Email address'
-        param :form, 'user[password]', :string, :required, 'Password'
-        param :form, 'user[password_confirmation]', :string, :required, 'Password Confirmation'
-        response :created
-        response :not_acceptable
-      end
-
-      def create
-        user = User.new(user_params)
-        user.create_new_auth_token
-        if user.save
-          render json: {data: {user: {email: user.email }}}, status: 201
-        else
-          render json: {data: {errors: user.errors}}, status: 406
-        end
-      end
-
       swagger_api :show do
         summary 'Fetches a User'
         param :path, :id, :integer, :required, 'User ID'
