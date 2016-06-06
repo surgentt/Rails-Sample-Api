@@ -27,6 +27,14 @@ run 'bundle exec rspec' to run the unit testing
 - User roles are setup using the enum function. All users are set to default as customers and then programmers can upgrade their settings.
 - I have not yet setup the fully robust and secure User Authentication system, but I cam confident I can complete the taks. 
 
+update
+------
+
+I just couldn't leave my user authentication so hacky, so I made some updates and started integrating devise token auth correctly.
+To rollback to the commit location on Friday please visit:
+ git checkout e7e6bdc9d88b7e669ef3eb196a4c86ad09f7c568
+
+
 ## JSON Response Format
 
 I used the following guide [JSON Api](http://jsonapi.org/format/) as a starting point.
